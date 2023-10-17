@@ -24,6 +24,7 @@ export default class AppClass extends React.Component {
       ...initialState,
       email: '',
     }
+    this.reset = this.reset.bind(this)
   }
 
   getXY = () => {
@@ -46,7 +47,10 @@ export default class AppClass extends React.Component {
 
   reset = () => {
     // Use this helper to reset all states to their initial values.
-    this.setState({ ...initialState })
+    this.setState({
+      ...initialState,
+      email: '',
+    })
   }
 
   getNextIndex = (direction) => {
