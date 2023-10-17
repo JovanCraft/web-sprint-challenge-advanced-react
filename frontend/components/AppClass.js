@@ -88,7 +88,7 @@ export default class AppClass extends React.Component {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
     const direction = event.target.id;
-    console.log('Button clicked', direction)
+    //console.log('Button clicked', direction)
     const next = this.getNextIndex(direction);
     const steps = this.state.steps + 1;
 
