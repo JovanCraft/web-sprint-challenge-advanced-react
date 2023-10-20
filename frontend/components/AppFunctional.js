@@ -80,8 +80,14 @@ export default function AppFunctional(props) {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
     const direction = event.target.id;
-    setIndex((currentIndex) => getNextIndex(currentIndex, direction))
+    const nextIndex = getNextIndex(index, direction)
+    if(index === nextIndex){
+      setMessage(`You can't go ${direction}`)
+    } else {
+      setIndex((currentIndex) => getNextIndex(currentIndex, direction))
     setSteps(steps + 1)
+    }
+
   }
 
   function onChange(event) {
@@ -106,10 +112,13 @@ export default function AppFunctional(props) {
 
     axios.post('http://localhost:9000/api/result', payload)
     .then(res => {
-      console.log('Post successful', res.data.message)
+      //console.log('Post successful', res.data.message)
+      setMessage(res.data.message)
+      setEmail(initialEmail)
     })
     .catch(err => {
-      console.log('Post error', err)
+      //console.log(err.response.data.message)
+      setMessage(err.response.data.message)
     })
   }
 
@@ -117,7 +126,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">You moved {steps} {steps === 1 ? 'time' : 'times'}</h3>
       </div>
       <div id="grid">
         {

@@ -22,9 +22,9 @@ export default class AppClass extends React.Component {
 
     this.state = {
       ...initialState,
-      email: '',
+
     }
-    this.reset = this.reset.bind(this)
+    //this.reset = this.reset.bind(this)
   }
 
   getXY = () => {
@@ -86,21 +86,30 @@ export default class AppClass extends React.Component {
     }
 
     return next
+
   }
+
 
   move = (event) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-    const direction = event.target.id;
-    //console.log('Button clicked', direction)
-    const next = this.getNextIndex(direction);
-    const steps = this.state.steps + 1;
 
-    this.setState({
-      index: next,
-      steps: steps
-    })
-  }
+    const { index } = this.state;
+    const direction = event.target.id;
+    const nextIndex = this.getNextIndex(direction);
+
+    if (index === nextIndex) {
+      this.setState({
+        ...this.state,
+        message: `You can't go ${direction}`});
+    } else {
+      this.setState((prevState) => ({
+        index: this.getNextIndex(direction),
+        steps: prevState.steps + 1,
+      }));
+    }
+  };
+
 
   onChange = (event) => {
     // You will need this to update the value of the input.
@@ -126,10 +135,19 @@ export default class AppClass extends React.Component {
 
     axios.post('http://localhost:9000/api/result', payload)
     .then(res => {
-      console.log('Post successful', res.data.message)
+      //console.log('Post successful', res.data.message)
+      this.setState({
+        ...this.state,
+        message: res.data.message,
+        email: initialEmail
+      })
     })
     .catch(err => {
-      console.log('Post error', err);
+      //console.log(err);
+      this.setState({
+        ...this.state,
+        message: err.response.data.message
+      })
     })
   }
 
@@ -142,7 +160,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{getXYMessage}</h3>
-          <h3 id="steps">You moved {this.state.steps} times</h3>
+          <h3 id="steps">You moved {this.state.steps} {this.state.steps === 1 ? 'time' : 'times'}</h3>
         </div>
         <div id="grid">
           {
@@ -154,7 +172,7 @@ export default class AppClass extends React.Component {
           }
         </div>
         <div className="info">
-          <h3 id="message"></h3>
+          <h3 id="message">{this.state.message}</h3>
         </div>
         <div id="keypad">
           <button id="left" onClick={this.move}>LEFT</button>
