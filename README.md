@@ -95,3 +95,8 @@ Study its functionality and also inspect the Console, the Network tab and the El
 
 - "Product" works hard designing the messages: we must reproduce them faithfully, down to the last comma.
 - If you start with Functional, don't switch to Class-Based until Functional is passing all its tests (and vice versa).
+
+
+
+
+
