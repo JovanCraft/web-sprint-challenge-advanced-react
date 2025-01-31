@@ -101,4 +101,3 @@ Study its functionality and also inspect the Console, the Network tab and the El
 
 
 
-
